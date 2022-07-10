@@ -5,25 +5,25 @@ Created on Mon Jun  6 20:32:41 2022
 @author: Wonseok
 """
 
-# 나의 답변
+import collections
+import itertools
+import numpy as np
+
+orders = ["ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"]
+course = [2,3,4]
 def solution(orders, course):
-    answer = []
-    
-    return sorted(answer)
+    result = []
+
+    for course_size in course:
+        order_combinations = []
+        for order in orders:
+            order_combinations += itertools.combinations(sorted(order), course_size)
+
+        unique_combinations = list(set(order_combinations))
+        most_ordered = sorted([(u, order_combinations.count(u)) for u in unique_combinations], key=lambda x: x[1], reverse=True)
+        # most_ordered = collections.Counter(order_combinations).most_common()
+        result += [ k for k, v in most_ordered if v > 1 and v == most_ordered[0][1] ]
+
+    return [ ''.join(v) for v in sorted(result) ]
 
 print(solution(["ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"], [2,3,4]))
-print(solution(["ABCDE", "AB", "CD", "ADE", "XYZ", "XYZ", "ACD"], [2,3,5]))
-print(solution(["XYZ", "XWY", "WXA"], [2,3,4]))
-
-max(set(["ABCDE", "AB", "CD", "ADE", "XYZ", "XYZ", "ACD"]), key = ["ABCDE", "AB", "CD", "ADE", "XYZ", "XYZ", "ACD"].count)
-list(combinations(["ABCDE", "AB", "CD", "ADE", "XYZ", "XYZ", "ACD"]))
-
-def combs(a):
-    if len(a) == 0:
-        return [[]]
-    cs = []
-    for c in combs(a[1:]):
-        cs += [c, c+[a[0]]]
-    return cs
-
-print(combs(''.join("ABCDE")))
